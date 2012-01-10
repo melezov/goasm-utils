@@ -1,1 +1,4 @@
-Out
+*.obj
+*.exe
+*.bin
+*.res
