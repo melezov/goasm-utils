@@ -1,10 +1,10 @@
 @echo off
-setlocal
+setlIPl
 
-set OCA_STEPS=4
-set OCA_PSE=
-set OCA_ARCH=/x32
-set OCA_UNICODE=
+set IP_STEPS=4
+set IP_PSE=
+set IP_ARCH=/x32
+set IP_UNICODE=
 
 :loopy
 if "%1" == "/x64" goto set_x64
@@ -18,25 +18,25 @@ if "%1" == "" goto entry
 goto loopy
 
 :set_x64
-set OCA_ARCH=/x64
+set IP_ARCH=/x64
 goto shifty
 
 :set_unicode
-set OCA_UNICODE=/d UNICODE=1
+set IP_UNICODE=/d UNICODE=1
 goto shifty
 
 :set_run
-set OCA_STEPS=5
+set IP_STEPS=5
 goto shifty
 
 :set_pause
-set OCA_PSE=pause
+set IP_PSE=pause
 goto shifty
 
 :show_help
 echo.
-echo This program will build the OutCmdArg proggie, resulting in the
-echo "Out\OutCmdArg.exe" file. You will need to have GoAsm, GoLink and GoRC,
+echo This program will build the InPass proggie, resulting in the
+echo "Out\InPass.exe" file. You will need to have GoAsm, GoLink and GoRC,
 echo the GoTools by Jeremy Gordon in your path (http://www.godevtool.com/)
 echo.
 echo Switches are as follows:
@@ -53,7 +53,7 @@ goto :EOF
 :entry
 
 echo.
-echo Building OutCmdArg (/? for help):
+echo Building InPass (/? for help):
 echo.
 
 if exist "Out" goto out_exists
@@ -61,40 +61,40 @@ mkdir Out
 
 :out_exists
 cd Out
-echo Step #(1/%OCA_STEPS%) CLEANUP
-if exist "OutCmdArg.bin" del "OutCmdArg.bin"
-if exist "OutCmdArg.bin" goto errcln
-if exist "OutCmdArg.res" del "OutCmdArg.res"
-if exist "OutCmdArg.res" goto errcln
-if exist "OutCmdArg.obj" del "OutCmdArg.obj"
-if exist "OutCmdArg.obj" goto errcln
-if exist "OutCmdArg.exe" del "OutCmdArg.exe"
-if exist "OutCmdArg.exe" goto errcln
+echo Step #(1/%IP_STEPS%) CLEANUP
+if exist "InPass.bin" del "InPass.bin"
+if exist "InPass.bin" goto errcln
+if exist "InPass.res" del "InPass.res"
+if exist "InPass.res" goto errcln
+if exist "InPass.obj" del "InPass.obj"
+if exist "InPass.obj" goto errcln
+if exist "InPass.exe" del "InPass.exe"
+if exist "InPass.exe" goto errcln
 
 cd ..\Src
-echo Step #(2/%OCA_STEPS%) RESOURCES
-"GoRC.exe" /b /ni /r /fo "..\Out\OutCmdArg.res" "OutCmdArg.rc"
+echo Step #(2/%IP_STEPS%) RESOURCES
+"GoRC.exe" /b /ni /r /fo "..\Out\InPass.res" "InPass.rc"
 if errorlevel 1 goto errres
 
 cd ..\Src
-echo Step #(3/%OCA_STEPS%) ASSEMBLY
-"GoAsm.exe" /b /ni %OCA_ARCH% %OCA_UNICODE% /fo "..\Out\OutCmdArg.obj" "OutCmdArg.asm"
+echo Step #(3/%IP_STEPS%) ASSEMBLY
+"GoAsm.exe" /b /ni %IP_ARCH% %IP_UNICODE% /fo "..\Out\InPass.obj" "InPass.asm"
 if errorlevel 1 goto errasm
 
 cd ..\Out
-echo Step #(4/%OCA_STEPS%) LINKER
-"GoLink.exe" /ni /fo "OutCmdArg.exe" /entry OutCmdArg_Entry "OutCmdArg.obj" "OutCmdArg.res" user32.dll kernel32.dll shell32.dll
+echo Step #(4/%IP_STEPS%) LINKER
+"GoLink.exe" /ni /fo "InPass.exe" /entry InPass_Entry "InPass.obj" "InPass.res" user32.dll kernel32.dll shell32.dll
 if errorlevel 1 goto errlink
 
-if "%OCA_STEPS%" == "4" goto Bye
+if "%IP_STEPS%" == "4" goto Bye
 
 cd ..\Out
-echo Step #(5/%OCA_STEPS%) EXECUTION
-start OutCmdArg Arg1 "Arg 2"
+echo Step #(5/%IP_STEPS%) EXECUTION
+start InPass Arg1 "Arg 2"
 echo.
 echo Contents of the arguments file:
 echo.
-type OutCmdArg.exe-Arguments.txt
+type InPass.exe-Arguments.txt
 goto Bye
 
 :errcln
@@ -120,4 +120,4 @@ goto Bye
 :Bye
 cd ..
 echo.
-%OCA_PSE%
+%IP_PSE%

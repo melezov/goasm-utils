@@ -1,6 +1,6 @@
 ; #############################################################################
 
-        #include "OutCmdArg.inc"
+        #include "InPass.inc"
 
 ; #############################################################################
 
@@ -22,7 +22,7 @@
 
 ; =============================================================================
 
-        OutCmdArg_Entry:
+        InPass_Entry:
         ;{
             invoke GetModuleFileName, NULL, ADDR szModuleName, MAX_PROCESS_NAME_LENGTH
             invoke lstrcat, ADDR szModuleName, ADDR szLogAppendix

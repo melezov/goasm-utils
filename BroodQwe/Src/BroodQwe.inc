@@ -31,23 +31,23 @@
 
         #define GRID_SX 500
         #define GRID_SY 357
-    
+
         #define GRID_EX 632
         #define GRID_EY 474
 
         #define SRES_EX 640 ; / = * 0CCCCCCCDh, edx >> 9
-        #define SRES_EY 480 ; / = * 088888889h, edx >> 8       
+        #define SRES_EY 480 ; / = * 088888889h, edx >> 8
 
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        #define MAB_SX ( ( GRID_DX / 2 + GRID_SX + 1 ) * 0FFFFh ) / SRES_EX 
+        #define MAB_SX ( ( GRID_DX / 2 + GRID_SX + 1 ) * 0FFFFh ) / SRES_EX
         #define MAB_SY ( ( GRID_DY / 2 + GRID_SY + 1 ) * 0FFFFh ) / SRES_EY
 
-        #define MAB_DX ( ( GRID_DX + 1 ) * 0FFFFh ) / SRES_EX 
+        #define MAB_DX ( ( GRID_DX + 1 ) * 0FFFFh ) / SRES_EX
         #define MAB_DY ( ( GRID_DY + 1 ) * 0FFFFh ) / SRES_EY
-        
+
         #define MAB_EX
-        
+
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         #define BK_ESC  1h
@@ -57,16 +57,16 @@
         #define BK_ON   13h
         #define BK_OFF  21h
         #define BK_ES   2Eh
-        
+
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         #define hInst   400000h
         #define hIcon   402130h
-        #define hBroo   402298h        
+        #define hBroo   402298h
         #define hABox   4032CCh
 
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      
+
        #include "..\Src\Windows.inc"
        #include "..\Res\BroodQwe.def"
 
@@ -106,13 +106,13 @@
             sBrood  dd
             sAbout  dd
             sBExit  dd
-            
+
             sDuble  dd
             sTbrCr  dd
             sEHook  dd
         ;}
         ENDS
-        
+
         AB STRUCT
         ;{
             sAOpen  dd
@@ -130,7 +130,7 @@
         	uCallbackMessage    dd  WM_USER
         	hIcon               dd  0h
             szTip               dss "BroodQwe - "
-            szPasive            dss "Pasive", 0h 
+            szPasive            dss "Pasive", 0h
             szActive            dss "Active"
             hIcon2              dd 0h
         ENDS
@@ -148,7 +148,7 @@
             dwExtraInfo dd 0h
         ;}
         ENDS
-        
+
         BC STRUCT
         ;{
             jump    MOUSEINPUT < 0h, 0h, 0h, 0h, MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN, 0h, 0h >

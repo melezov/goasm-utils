@@ -5,17 +5,17 @@
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         CODE SECTION ".text"
-    
+
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         BroodQwe_Entry:
-        ;{  
+        ;{
             mov     edi, hBroo
-                     
+
             xor     eax, eax
             inc     eax
             lock    xadd D[ ebk.dDuble ], eax
-            
+
             dec     eax
             js      >.DBL_OK
             ;{
@@ -25,7 +25,7 @@
 
             push    0Dh
             pop     ebx
-                
+
 .SWH_LOOP:  invoke  SetWindowsHookEx, ebx, addr RatHookProc, hInst, 0h
             push    eax
             or      eax, eax
@@ -65,13 +65,13 @@
 
             invoke  RegisterWindowMessage, [ ebk.sTbrCr ]
             mov   [ ebk.dTbrCr ], eax
-        
+
             invoke  DialogBoxParam, hInst, IDI_DIALOG, 0h, addr DialogProc, 0h
 
             invoke  UnhookWindowsHookEx
             invoke  UnhookWindowsHookEx
-                      
-            xor     eax, eax 
+
+            xor     eax, eax
             ret
         ;}
 
@@ -90,7 +90,7 @@
             mov     eax, [ eba.nid.hIcon2 ]
             xchg    eax, [ eba.nid.hIcon ]
             mov     [ eba.nid.hIcon2 ], eax
-            
+
             mov     eax, [ eba.nid.szPasive ]
             xchg    eax, [ eba.nid.szActive ]
             mov     [ eba.nid.szPasive ], eax
@@ -116,7 +116,7 @@
             invoke  GetSystemMetrics, 0h
             sub     eax, [ eba.bz.bounds.res.x ]
             jnz     >.CR_RET
-               
+
             invoke  GetSystemMetrics, 1h
             sub     eax, [ eba.bz.bounds.res.y ]
 
@@ -129,7 +129,7 @@
         ;{
             USES    edi
             mov     edi, hBroo
-            
+
             mov     eax, [ uMsg ]
             cmp     eax, WM_INITDIALOG
             jnz     >.NOT_ID
@@ -156,14 +156,14 @@
                     invoke  MakeMenu
                     jmp     <.DP_ONE
 .TI_RBD:        ;}
-    
+
                 cmp     ecx, WM_LBUTTONDBLCLK
                 jnz     >.TI_LDB
                 ;{
                     xor     D[ ebk.dBrood ], MF_CHECKED
                     call    XchgTray
 .TI_LDB:        ;}
-                
+
                 jmp     <.DP_ONE
 .NOT_TI     ;}
 
@@ -174,7 +174,7 @@
 
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        MakeMenu: ; hBroo in edi 
+        MakeMenu: ; hBroo in edi
         ;{
             #ifdef  DEBUG
             ;{
@@ -184,7 +184,7 @@
                     int 3
 .MM_DBG:        ;}
             ;}
-            #endif       
+            #endif
 
             invoke  CreatePopupMenu
             push    esi, eax
@@ -195,18 +195,18 @@
                     push    0h, 4h, eax
 
                     push    6h
-                    pop     esi    
+                    pop     esi
 .MM_AM1:            push    [ ebk.sMPing + esi * 4 - 4 ], esi, [ ebk.dMPing + esi * 4 - 4 ], eax
-                    
+
                     cmp     esi, 3h
                     jl      >.MM_SEP
                     ;{
                         push    0h, 0h, MF_SEPARATOR, eax
                     ;}
-                    
+
 .MM_SEP:            dec     esi
                     jnz     <.MM_AM1
-                                    
+
                     push    9h
                     pop     esi
 .MM_AM2:            invoke  AppendMenu
@@ -217,12 +217,12 @@
                 invoke  SetMenuDefaultItem
                 invoke  SetForegroundWindow, [ eba.nid.hWnd ]
                 invoke  TrackPopupMenu
-                
+
                 dec     eax
                 js      >.TM_CNL
-                ;{  
+                ;{
                     xor     D[ ebk.dMPing + eax * 4 ], MF_CHECKED
-                        
+
                     dec     eax
                     jnz     >.TM_BLK
                     ;{
@@ -243,7 +243,7 @@
                     ;{
                         invoke  AboutBox
                         jmp     >.TM_CNL
-.TM_AB:             ;}                    
+.TM_AB:             ;}
 
                     dec     eax
                     jnz     >.TM_EXT
@@ -256,9 +256,9 @@
             ;}
 
             invoke  DestroyMenu
-            
+
             pop     esi
-            ret    
+            ret
         ;}
 
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -266,20 +266,20 @@
         AboutBox: ; hBroo in edi, esi is volatile
         ;{
             mov     esi, hABox
-     
+
             xor     D[ ebk.dAbout ], MF_GRAYED
             invoke  MessageBox, [ eba.nid.hWnd ], [ eab.sAInfo ], [ ebk.sBrood ], MB_ICONINFORMATION | MB_YESNO
             and     D[ ebk.dAbout ], 0h
-            
+
             cmp     eax, IDYES
             jnz     >.AB_SSE
             ;{
-                invoke  ShellExecute, [ eba.nid.hWnd ], [ eab.sAOpen ], [ eab.sAHttp ], 0h, 0h, SW_SHOWNORMAL 
+                invoke  ShellExecute, [ eba.nid.hWnd ], [ eab.sAOpen ], [ eab.sAHttp ], 0h, 0h, SW_SHOWNORMAL
 .AB_SSE:    ;}
-            
-            ret  
-        ;}            
-        
+
+            ret
+        ;}
+
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         TrayAction: FRAME dAction ; hBroo in edi
@@ -292,37 +292,37 @@
                     int 3
 .TA_DBG:        ;}
             ;}
-            #endif       
-            
+            #endif
+
             lea     eax, [ eba.nid ]
             invoke  Shell_NotifyIcon, [ dAction ], eax
             ret
         ;}
         ENDF
-    
+
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         RatHookProc: FRAME nCode, wParam, lParam
         ;{
             USES    esi, edi
-   
+
             mov     edi, hBroo
             mov     esi, [ lParam ]
             cld
-    
+
             mov     ecx, [ wParam ]
             cmp     ecx, WM_MOUSEMOVE
             jnz     >.RH_MM
             ;}
                 lea     edi, [ eba.bz.oldPos ]
-   
+
                 movsd
                 movsd
-                
+
 .RH_CNH:        invoke  CallNextHookEx, 0h, [ nCode ], [ wParam ], [ lParam ]
 .RH_RET:        ret
 .RH_MM:     ;}
-            
+
             cmp     ecx, WM_SYSKEYDOWN
             jnz     >.RH_SKD
             ;{
@@ -335,7 +335,7 @@
                     push    MF_CHECKED
                     pop     eax
                     jmp     >.BK_TA
-.BK_ON:         ;}      
+.BK_ON:         ;}
 
                 cmp     D[ ebk.dBrood ], MF_CHECKED
                 jl      <.RH_CNH
@@ -346,25 +346,25 @@
                     xor     eax, eax
 .BK_TA:             cmp     D[ ebk.dBrood ], eax
                     jz      <.RH_CNH
-                                        
+
                     mov     D[ ebk.dBrood ], eax
                     lea     esi, [ eax * 4 + MB_ICONERROR ]
-                    
-                    invoke  XchgTray                    
+
+                    invoke  XchgTray
                     invoke  MessageBeep, esi
  .BK_OFF:        ;}
 
-                jmp     <.RH_CNH        
+                jmp     <.RH_CNH
 .RH_SKD:    ;}
 
             cmp     D[ ebk.dBrood ], MF_CHECKED
             jl      <.RH_CNH
-   
+
             push    ecx
             invoke  CheckRes
             pop     ecx
-            jnz     <.RH_CNH            
-            
+            jnz     <.RH_CNH
+
             cmp     ecx, WM_LBUTTONDOWN
             jnz     >.RH_LBD
             ;{
@@ -373,27 +373,27 @@
 
                 mov     eax, edi
                 lea     edi, [ eba.bz.bounds.str ]
-                
-                cmpsd 
+
+                cmpsd
                 jl      <.RH_CNH
                 cmpsd
                 jl      <.RH_CNH
                 sub     esi, 8h
-                
+
                 cmpsd
                 jg      <.RH_CNH
-                cmpsd   
+                cmpsd
                 jg      <.RH_CNH
 
                 test    B[ esi + 4 ], LLMHF_INJECTED
                 jnz     <.RH_CNH
-               
+
                 cmp     D[ eax ], MF_CHECKED ; ebk.dMPing
                 jl      >.RH_SSH
                 ;{
                     invoke  MessageBeep, ~0h
 .RH_SSH:        ;}
-        
+
 .RH_ONE:        xor     eax, eax
                 inc     eax
                 jmp     <.RH_RET
@@ -404,7 +404,7 @@
             ;{
                 cmp     D[ ebk.dKbMap ], MF_CHECKED
                 jl      <.RH_CNH
-            
+
                 lodsd
                 lodsd
 
@@ -412,16 +412,16 @@
                 jnz     >.BK_CHAT
                 ;{
                     xor     D[ ebk.dEnter ], MF_CHECKED
-                    jmp     <.RH_CNH                    
+                    jmp     <.RH_CNH
 .BK_CHAT:        ;}
-    
+
                 cmp     eax, BK_ESC
                 jnz     >.BK_ESC
                 ;{
                     and     D[ ebk.dEnter ], 0h
                     jmp     <.RH_CNH
 .BK_ESC:        ;}
-    
+
                 cmp     D[ ebk.dEnter ], MF_CHECKED
                 jge     <.RH_CNH
 
@@ -437,14 +437,14 @@
 ; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         SynKey: ; scancode in eax
-        ;{         
+        ;{
             cmp     eax, BK_ES
             jle     >.SK_ES
             ;{
 .SK_SK:         xor     eax, eax
                 ret
 .SK_ES:     ;}
-            
+
             sub     eax, BK_SS
             jl      <.SK_SK
 
@@ -454,21 +454,21 @@
 .SK_VER:    cmp     al, 0Eh
             jl      >.SK_VOK
             add     edx, MAB_DY
-      
+
             sub     al, 0Eh
             jmp     <.SK_VER
 
 .SK_VOK:    cmp     al, 02h
             jg      <.SK_SK
-                        
+
 .SK_HOR     or      al, al
             jz      >.SK_HOK
             add     ecx, MAB_DX
             dec     eax
-            jmp     <.SK_HOR               
-        
+            jmp     <.SK_HOR
+
 .SK_HOK:    lea     esi, [ eba.bc ]
-                
+
             mov     [ esi + BC.jump.dx ], ecx
             mov     [ esi + BC.jump.dy ], edx
 
@@ -478,7 +478,7 @@
             shl     eax, 16
             mul     edx
             shr     edx, 9
-            mov     [ esi + BC.return.dx ], edx                
+            mov     [ esi + BC.return.dx ], edx
 
             mov     eax, [ eba.bz.oldPos.y ]
             inc     eax
@@ -486,8 +486,8 @@
             shl     eax, 16
             mul     edx
             shr     edx, 8
-            mov     [ esi + BC.return.dy ], edx                
-            
+            mov     [ esi + BC.return.dy ], edx
+
             invoke  SendInput, 4h, esi, sizeof( MOUSEINPUT )
             ret
         ;}
