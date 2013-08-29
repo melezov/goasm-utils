@@ -23,25 +23,25 @@
 ; #############################################################################
 
         #define NULL                         0h
-	#define IMP
+        #define IMP
 
 ; =============================================================================
 
+        #define GENERIC_READ          80000000h
         #define GENERIC_WRITE         40000000h
-        #define FILE_SHARE_READ              1h
-        #define OPEN_ALWAYS                  4h
-        #define FILE_ATTRIBUTE_NORMAL       80h
+        
+        #define FILE_SHARE_READ       1h     
+        #define OPEN_EXISTING                
+        #define FILE_ATTRIBUTE_NORMAL       
 
-        #define FILE_END                     2h
-        #define INVALID_HANDLE_VALUE        -1
-
+        #define INVALID_HANDLE_VALUE       
+        
+        #define ENABLE_ECHO_INPUT
+        
 ; =============================================================================
 
-	#define GetModuleFileName	IMP ## GetModuleFileName	## AW
-	#define lstrcat                 IMP ## lstrcat                  ## AW
 	#define CreateFile              IMP ## CreateFile               ## AW
-	#define GetCommandLine          IMP ## GetCommandLine           ## AW
-	#define lstrlen                 IMP ## lstrlen                  ## AW
+	#define GetConsoleMode          IMP ## GetConsoleMode 
 
 ; =============================================================================
 

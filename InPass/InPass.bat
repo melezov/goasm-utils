@@ -1,5 +1,5 @@
 @echo off
-setlIPl
+setlocal
 
 set IP_STEPS=4
 set IP_PSE=
@@ -90,11 +90,7 @@ if "%IP_STEPS%" == "4" goto Bye
 
 cd ..\Out
 echo Step #(5/%IP_STEPS%) EXECUTION
-start InPass Arg1 "Arg 2"
-echo.
-echo Contents of the arguments file:
-echo.
-type InPass.exe-Arguments.txt
+start InPass
 goto Bye
 
 :errcln
